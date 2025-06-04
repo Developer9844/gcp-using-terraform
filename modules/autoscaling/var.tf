@@ -1,0 +1,3 @@
+variable "project_name" {}
+variable "vpc_name" {}
+variable "public_subnet_name" {}

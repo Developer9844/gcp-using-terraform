@@ -22,3 +22,10 @@ module "vpc" {
 #   project_id          = var.project_id
 #   project_name        = var.project_name
 # }
+
+module "autoscaling" {
+  source             = "./modules/autoscaling"
+  project_name       = var.project_name
+  vpc_name           = module.vpc.vpc_name
+  public_subnet_name = module.vpc.public_subnet_name
+}
