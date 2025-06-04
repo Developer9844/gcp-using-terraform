@@ -12,7 +12,7 @@ resource "google_compute_instance_template" "instance_template" {
   }
   network_interface {
     network    = var.vpc_name
-    subnetwork = var.public_subnet_name
+    subnetwork = var.public_subnet_id
     access_config {}
   }
 
@@ -48,20 +48,20 @@ resource "google_compute_health_check" "instance_health_check" {
 resource "google_compute_region_instance_group_manager" "sample_instance_group_manager" {
   name = "instance-group-manager"
   version {
-    instance_template = google_compute_instance_template.instance_template.name
+    instance_template = google_compute_instance_template.instance_template.self_link
   }
-  region             = "us-east1"
+  region             = var.gcp_region_central
   base_instance_name = "instance-group-manager"
 }
 
 
 resource "google_compute_region_autoscaler" "autoscaling" {
   name   = "${var.project_name}-autoscaling"
-  region = "us-east1"
-  target = google_compute_region_instance_group_manager.sample_instance_group_manager.name
+  region = var.gcp_region_central
+  target = google_compute_region_instance_group_manager.sample_instance_group_manager.self_link
   autoscaling_policy {
-    min_replicas    = 1
-    max_replicas    = 2
+    min_replicas    = 2
+    max_replicas    = 4
     cooldown_period = 60
     cpu_utilization {
       target = "0.8"

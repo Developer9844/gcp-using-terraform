@@ -49,3 +49,32 @@ resource "google_compute_firewall" "myVPC_Firewall" {
   source_ranges = ["103.215.158.90/32"]
   direction     = "INGRESS"
 }
+
+
+resource "google_compute_firewall" "allow_http" {
+  name    = "allow-http"
+  network = google_compute_network.myVPC.id
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80"]
+  }
+
+  target_tags = ["auto-scaling-group"]
+  direction   = "INGRESS"
+  source_ranges = ["0.0.0.0/0"]
+}
+
+resource "google_compute_firewall" "allow_http" {
+  name    = "allow-https"
+  network = google_compute_network.myVPC.id
+
+  allow {
+    protocol = "tcp"
+    ports    = ["443"]
+  }
+
+  target_tags = ["auto-scaling-group"]
+  direction   = "INGRESS"
+  source_ranges = ["0.0.0.0/0"]
+}

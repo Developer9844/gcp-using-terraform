@@ -27,5 +27,6 @@ module "autoscaling" {
   source             = "./modules/autoscaling"
   project_name       = var.project_name
   vpc_name           = module.vpc.vpc_name
-  public_subnet_name = module.vpc.public_subnet_name
+  public_subnet_id   = module.vpc.public_subnet_id
+  gcp_region_central = var.gcp_region_central
 }
