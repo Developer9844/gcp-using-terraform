@@ -23,3 +23,7 @@ output "public_subnet_name" {
 output "public_subnet_id" {
   value = google_compute_subnetwork.public_subnet.id
 }
+
+# output "private_networking_connection" {
+#   value = google_service_networking_connection.private_vpc_connection.id
+# }

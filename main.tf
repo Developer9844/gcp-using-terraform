@@ -15,13 +15,13 @@ module "vpc" {
 }
 
 
-module "vm-1" {
-  source              = "./modules/vm"
-  private_subnet_name = module.vpc.private_subnet_name
-  public_subnet_name  = module.vpc.public_subnet_name
-  project_id          = var.project_id
-  project_name        = var.project_name
-}
+# module "vm-1" {
+#   source              = "./modules/vm"
+#   private_subnet_name = module.vpc.private_subnet_name
+#   public_subnet_name  = module.vpc.public_subnet_name
+#   project_id          = var.project_id
+#   project_name        = var.project_name
+# }
 
 # module "autoscaling" {
 #   source             = "./modules/autoscaling"
