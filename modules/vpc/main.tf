@@ -60,7 +60,7 @@ resource "google_compute_firewall" "allow_http" {
     ports    = ["80"]
   }
 
-  target_tags = ["auto-scaling-group"]
+  target_tags = ["auto-scaling-group", "auto-scaling-group-2"]
   direction   = "INGRESS"
   source_ranges = ["0.0.0.0/0"]
 }
@@ -74,7 +74,7 @@ resource "google_compute_firewall" "allow_https" {
     ports    = ["443"]
   }
 
-  target_tags = ["auto-scaling-group"]
+  target_tags = ["auto-scaling-group", "auto-scaling-group-2"]
   direction   = "INGRESS"
   source_ranges = ["0.0.0.0/0"]
 }
