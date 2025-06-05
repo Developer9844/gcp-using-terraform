@@ -4,6 +4,9 @@ output "vpc_id" {
 output "vpc_name" {
   value = google_compute_network.myVPC.name
 }
+output "vpc_self_link" {
+  value = google_compute_network.myVPC.self_link
+}
 
 output "private_subnet_name" {
   value = google_compute_subnetwork.private_subnet.name
