@@ -24,7 +24,6 @@ resource "google_compute_instance_template" "instance_template" {
     #!/bin/bash
     sudo apt update
     sudo apt install apache2 -y
-
   EOF
 
   tags = ["auto-scaling-group"]
@@ -38,8 +37,8 @@ resource "google_compute_health_check" "instance_health_check" {
   healthy_threshold   = 5
   unhealthy_threshold = 10
   http_health_check {
-    request_path = "/health.jsp"
-    port         = 8080
+    request_path = "/"
+    port         = 80
   }
 
 }
@@ -52,6 +51,10 @@ resource "google_compute_region_instance_group_manager" "sample_instance_group_m
   }
   region             = var.gcp_region_central
   base_instance_name = "instance-group-manager"
+  named_port {
+    name = "port"
+    port = 80
+  }
 }
 
 

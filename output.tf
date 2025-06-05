@@ -5,3 +5,7 @@
 output "public_subnet_name" {
   value = module.vpc.public_subnet_name
 }
+
+output "forward_ip-load_balancer" {
+  value = module.load_balancer.forwarding_ip
+}

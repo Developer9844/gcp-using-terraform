@@ -65,7 +65,7 @@ resource "google_compute_firewall" "allow_http" {
   source_ranges = ["0.0.0.0/0"]
 }
 
-resource "google_compute_firewall" "allow_http" {
+resource "google_compute_firewall" "allow_https" {
   name    = "allow-https"
   network = google_compute_network.myVPC.id
 

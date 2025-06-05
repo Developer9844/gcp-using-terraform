@@ -30,3 +30,10 @@ module "autoscaling" {
   public_subnet_id   = module.vpc.public_subnet_id
   gcp_region_central = var.gcp_region_central
 }
+
+module "load_balancer" {
+  source                 = "./modules/load-balancer"
+  project_name           = var.project_name
+  instance_group_manager = module.autoscaling.instance_group_manager
+  health_check           = module.autoscaling.health_check
+}
