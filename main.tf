@@ -47,3 +47,18 @@ module "vpc" {
 #   project_id          = var.project_id
 #   vpc_name            = module.vpc.vpc_name
 # }
+
+# module "containerCloudRun" {
+#   source             = "./modules/cloud-run"
+#   project_name       = var.project_name
+#   gcp_region_central = var.gcp_region_central
+#   vpc_name           = module.vpc.vpc_name
+# }
+
+module "gke" {
+  source              = "./modules/gke"
+  gcp_private_region  = var.gcp_private_region
+  project_name        = var.project_name
+  vpc_self_link       = module.vpc.vpc_self_link
+  private_subnet_name = module.vpc.private_subnet_name
+}
