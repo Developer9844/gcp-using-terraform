@@ -55,10 +55,16 @@ module "vpc" {
 #   vpc_name           = module.vpc.vpc_name
 # }
 
-module "gke" {
-  source              = "./modules/gke"
-  gcp_private_region  = var.gcp_private_region
-  project_name        = var.project_name
-  vpc_self_link       = module.vpc.vpc_self_link
-  private_subnet_name = module.vpc.private_subnet_name
+# module "gke" {
+#   source              = "./modules/gke"
+#   gcp_private_region  = var.gcp_private_region
+#   project_name        = var.project_name
+#   vpc_self_link       = module.vpc.vpc_self_link
+#   private_subnet_name = module.vpc.private_subnet_name
+# }
+
+
+module "cdnBucketStaticWebsite" {
+  source       = "./modules/bucket-cdn-static-website"
+  project_name = var.project_name
 }
