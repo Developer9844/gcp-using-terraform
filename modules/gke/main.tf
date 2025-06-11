@@ -1,26 +1,27 @@
 resource "google_container_cluster" "gke_cluster" {
-  name = "${var.project_name}-gke-cluster"
-  location = "us-east1-b"   # zonal base, you can also make region base
+  name     = "${var.project_name}-gke-cluster"
+  location = "us-east1-b" # zonal base, you can also make region base
 
-  network = var.vpc_self_link
+  network    = var.vpc_self_link
   subnetwork = var.private_subnet_name
 
   remove_default_node_pool = true
-  initial_node_count = 1
-  
+  initial_node_count       = 1
+
   cluster_autoscaling {
     enabled = true
     resource_limits {
       resource_type = "cpu"
-      minimum       = 6
-      maximum       = 100
+      minimum       = 2
+      maximum       = 50
     }
     resource_limits {
       resource_type = "memory"
-      minimum       = 32
-      maximum       = 64
+      minimum       = 4
+      maximum       = 50
     }
-    
+
+
     auto_provisioning_defaults {
       oauth_scopes = [
         "https://www.googleapis.com/auth/cloud-platform"
@@ -30,18 +31,18 @@ resource "google_container_cluster" "gke_cluster" {
       "us-east1-b",
       "us-east1-c"
     ]
-    autoscaling_profile = "BALANCED"
+    autoscaling_profile = "OPTIMIZE_UTILIZATION"   # BALANCED || we use to agressively down the nodes by optimization
 
   }
   ip_allocation_policy {
-    cluster_secondary_range_name = "pods"
+    cluster_secondary_range_name  = "pods"
     services_secondary_range_name = "services"
   }
 
   private_cluster_config {
-    enable_private_nodes = true
-    enable_private_endpoint = false    # true = only internal access
-    master_ipv4_cidr_block = "172.16.0.0/28" # required
+    enable_private_nodes    = true
+    enable_private_endpoint = false           # true = only internal access
+    master_ipv4_cidr_block  = "172.16.0.0/28" # required
   }
 
   release_channel {
@@ -50,7 +51,7 @@ resource "google_container_cluster" "gke_cluster" {
 
   master_authorized_networks_config {
     cidr_blocks {
-      cidr_block = "0.0.0.0/0"
+      cidr_block   = "0.0.0.0/0"
       display_name = "Public"
     }
   }
@@ -62,11 +63,11 @@ resource "google_container_cluster" "gke_cluster" {
 # GKE Node Pool - primary - recommended
 
 resource "google_container_node_pool" "primary_nodes" {
-  name       = "primary-node-pool"
-  cluster    = google_container_cluster.gke_cluster.name
-  location   = "us-east1-b"
+  name     = "primary-node-pool"
+  cluster  = google_container_cluster.gke_cluster.name
+  location = "us-east1-b"
 
-#   node_count = 2
+  #   node_count = 2
   autoscaling {
     min_node_count = 2
     max_node_count = 20
@@ -82,7 +83,11 @@ resource "google_container_node_pool" "primary_nodes" {
       env = "prod"
     }
     tags = ["gke-node-general"]
-    
+
+  }
+  management {
+    auto_repair  = true
+    auto_upgrade = true
   }
 }
 
